@@ -1,0 +1,30 @@
+-- 1. Fetch raw script content from your URL
+local rawUrl = "https://raw.githubusercontent.com/boniloyzin-cloud/Love/refs/heads/main/Resonance.txt"
+local success, scriptContent = pcall(function()
+    return game:HttpGet(rawUrl)
+end)
+
+if success and scriptContent then
+    -- 2. Direct string replacements to change names and titles to DAVI_PREMIUM
+    local modifiedScript = scriptContent
+        :gsub("Resonance", "DAVI_PREMIUM")
+        :gsub("resonance", "DAVI_PREMIUM")
+        :gsub("KT FTAP HUB", "DAVI_PREMIUM")
+        :gsub("FTAP", "DAVI_PREMIUM")
+
+    -- 3. Execute modified script safely
+    local executeFunc, err = loadstring(modifiedScript)
+    if executeFunc then
+        executeFunc()
+    else
+        -- Fallback: execute original script content if string modification encountered an issue
+        local fallbackFunc, fallbackErr = loadstring(scriptContent)
+        if fallbackFunc then
+            fallbackFunc()
+        else
+            warn("Failed to load script: ", fallbackErr or err)
+        end
+    end
+else
+    warn("Failed to fetch script content from the provided URL.")
+end
